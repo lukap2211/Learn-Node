@@ -36,15 +36,18 @@ const storeSchema = new mongoose.Schema({
 
 });
 
-storeSchema.pre('save', function(next) {
-  if(!this.isModified('name')) {
+storeSchema.pre('save', async function(next) {
+  if (!this.isModified('name')) {
     next();
     return;
   }
   this.slug = slug(this.name);
-  next();
-
-  // TOD make
+  const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i')
+  const storesWithSlugs = await this.constructor.find({ slug: slugRegEx })
+  if (storesWithSlugs.length) {
+    this.slug = `${this.slug}-${storesWithSlugs.length + 1}`
+  }
+  next()
 })
 
 module.export = mongoose.model('Store', storeSchema);
