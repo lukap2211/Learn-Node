@@ -23,6 +23,9 @@ router.post('/add/:id',
 router.get('/stores/:id/edit', catchErrors(storeController.editStore));
 router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 
+router.get('/tags/', catchErrors(storeController.getStoreByTag));
+router.get('/tags/:tag', catchErrors(storeController.getStoreByTag));
+
 router.get('/reverse/:name', (req, res) => {
   console.log('NAME: ${name}')
   const reversed = req.params.name.split('').reverse().join('')

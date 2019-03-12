@@ -73,3 +73,10 @@ exports.getStoreBySlug = async (req, res, next) => {
 
   res.render('store', {store})
 }
+
+exports.getStoreByTag = async (req, res, next) => {
+  const tags = await Store.getTagsList()
+  const tag = req.params.tag
+
+  res.render('tags', {tags, tag, title: 'Tags'})
+}
