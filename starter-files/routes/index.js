@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const storeController = require('../controllers/storeController.js')
+const userController = require('../controllers/userController.js')
+const authController = require('../controllers/authController.js')
 const { catchErrors } = require('../handlers/errorHandlers.js')
 
 // Do work here
@@ -25,6 +27,15 @@ router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 
 router.get('/tags/', catchErrors(storeController.getStoreByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoreByTag));
+
+router.get('/login', userController.loginForm);
+router.get('/register', userController.registerForm);
+
+router.post('/register',
+  userController.validateRegister,
+  userController.register,
+  authController.login
+);
 
 router.get('/reverse/:name', (req, res) => {
   console.log('NAME: ${name}')
