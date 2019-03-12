@@ -1,15 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const StoreController = require('../controllers/StoreController.js')
+const storeController = require('../controllers/storeController.js')
 const { catchErrors } = require('../handlers/errorHandlers.js')
 
 // Do work here
-router.get('/', catchErrors(StoreController.getStores));
-router.get('/stores', catchErrors(StoreController.getStores));
-router.get('/add', StoreController.addStore);
-router.post('/add', StoreController.createStore);
-router.post('/add/:id', StoreController.updateStore);
-router.get('/stores/:id/edit', catchErrors(StoreController.editStore));
+router.get('/', catchErrors(storeController.getStores));
+router.get('/stores', catchErrors(storeController.getStores));
+router.get('/add', storeController.addStore);
+
+router.post('/add',
+  storeController.upload,
+  catchErrors(storeController.resize),
+  catchErrors(storeController.createStore)
+);
+
+router.post('/add/:id',
+  storeController.upload,
+  catchErrors(storeController.resize),
+  catchErrors(storeController.updateStore)
+);
+
+
+router.get('/stores/:id/edit', catchErrors(storeController.editStore));
 
 router.get('/reverse/:name', (req, res) => {
   console.log('NAME: ${name}')
